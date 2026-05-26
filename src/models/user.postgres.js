@@ -14,14 +14,14 @@ const findByEmail = async (email) => {
     client = await pool.connect();
     const data = await client.query(queries.getUserByEmail, [email]);
 
-    result = data.rows;
+    result = data.rowCount ? data.rows[0] : null;
   } catch (error) {
     console.log(error);
     throw error;
   } finally {
     client.release();
   }
-  return (result.length) ? result : null;
+  return result;
 };
 
 const save = async (entry) => {
@@ -31,7 +31,7 @@ const save = async (entry) => {
     client = await pool.connect();
     const data = await client.query(queries.addUser, [name, email, password]);
 
-    result = data.rows;
+    result = data.rows[0];
   } catch (error) {
     console.log(error);
     throw error;
