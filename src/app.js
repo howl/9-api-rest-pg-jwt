@@ -13,6 +13,7 @@ app.use(express.json());
 //dbConnect().catch((error) => { console.log(error) });
 
 app.use(`${URL_BASE}/services`, require("./routes/services.route"));
+app.use(`${URL_BASE}/auth`, require("./routes/auth.route"));
 
 app.listen(PORT, () => {
   console.log(`Server on port ${PORT}`);
