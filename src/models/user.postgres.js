@@ -12,7 +12,7 @@ const findByEmail = async (email) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.getServiceByEmail, [email]);
+    const data = await client.query(queries.getUserByEmail, [email]);
 
     result = data.rows;
   } catch (error) {
