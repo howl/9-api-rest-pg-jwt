@@ -8,10 +8,12 @@ const router = Router();
 
 router.post("/new", [
   body("name").trim(),
-  body("name", "Name is required").not().isEmpty(),
+  body("name", "Name required").not().isEmpty(),
   body("email").trim().toLowerCase(),
-  body("email", "Email is required").not().isEmpty(),
+  body("email", "Email required").not().isEmpty(),
   body("email", "Invalid Email").isEmail(),
+  body("password", "Password required with at least 8 characters with 1 lower case letter, 1 upper case letter, 1 number and 1 symbol")
+    .isStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }),
   enforceValidations
 ], createUser);
 router.post("/", loginUser);
