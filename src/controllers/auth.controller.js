@@ -1,4 +1,5 @@
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.postgres");
 
@@ -15,10 +16,15 @@ const createUser = async (req, res) => {
 
     const user = await User.save({ name, email, password: await bcrypt.hash(password, 12) });
 
+    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    delete user.id;
+
     res.status(201).json({
       ok: true,
       msg: "User registration completed",
-      data: user
+      user,
+      token
     });
   } catch (error) {
     console.log(error);
