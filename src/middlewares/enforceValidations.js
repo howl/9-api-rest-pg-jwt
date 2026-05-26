@@ -6,7 +6,7 @@ const enforceValidations = (req, res, next) => {
   if (!errors.isEmpty()) {
     res.status(403).json({
       ok: false,
-      errores: errors.mapped()
+      errors: errors.mapped()
     });
   }
 
