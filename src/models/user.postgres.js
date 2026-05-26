@@ -8,6 +8,22 @@ const pool = new Pool({
   database: process.env.PG_DB_NAME
 });
 
+const findById = async (id) => {
+  let client, result;
+  try {
+    client = await pool.connect();
+    const data = await client.query(queries.getUserById, [id]);
+
+    result = data.rowCount ? data.rows[0] : null;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    client.release();
+  }
+  return result;
+};
+
 const findByEmail = async (email) => {
   let client, result;
   try {
@@ -41,4 +57,4 @@ const save = async (entry) => {
   return result;
 };
 
-module.exports = { findByEmail, save };
+module.exports = { findById, findByEmail, save };
