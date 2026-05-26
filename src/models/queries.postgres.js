@@ -1,4 +1,6 @@
 const queries = {
+  getUserByEmail: "SELECT 1 FROM users WHERE email = $1;",
+  addUser: "INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING *;",
   getServices: 'SELECT * FROM servicios;',
   getServiceById: 'SELECT * FROM servicios WHERE id = $1;',
   addService: 'INSERT INTO servicios (titulo, descripcion, categoria) VALUES ($1, $2, $3) RETURNING *;',
