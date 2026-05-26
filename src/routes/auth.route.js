@@ -16,7 +16,14 @@ router.post("/new", [
     .isStrongPassword({ minLength: 8, minLowercase: 1, minUppercase: 1, minNumbers: 1, minSymbols: 1 }),
   enforceValidations
 ], createUser);
-router.post("/", loginUser);
+router.post("/", [
+  body("email").trim().toLowerCase(),
+  body("email", "Email required").not().isEmpty(),
+  body("email", "Invalid Email").isEmail(),
+  body("password", "Password must be at least 8 characters")
+    .isStrongPassword({ minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0 }),
+  enforceValidations
+], loginUser);
 router.post("/renew", renewToken);
 
 module.exports = router;
