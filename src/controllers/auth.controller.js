@@ -7,12 +7,11 @@ const createUser = async (req, res) => {
   const { name, email, password } = req.body;
 
   try {
-    if (await User.findByEmail(email)) {
+    if (await User.findByEmail(email))
       return res.status(409).json({
         ok: false,
         msg: `Email ${email} already used, try "forget my password" if you don't remember it`
       });
-    }
 
     const user = await User.save({ name, email, password: await bcrypt.hash(password, 12) });
 
@@ -43,13 +42,13 @@ const loginUser = async (req, res) => {
     const user = await User.findByEmail(email);
 
     if (!user)
-      res.status(404).json({
+      return res.status(404).json({
         ok: false,
         msg: "No users with that email",
       });
 
     if (!await bcrypt.compare(password, user.password))
-      res.status(401).json({
+      return res.status(401).json({
         ok: false,
         msg: "Wrong password"
       });
