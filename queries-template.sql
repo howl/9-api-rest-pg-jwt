@@ -1,4 +1,19 @@
-DROP TABLE IF EXISTS servicios;
+DROP TABLE IF EXISTS users, servicios;
+
+CREATE TABLE IF NOT EXISTS users (
+  id serial NOT NULL PRIMARY KEY,
+  name varchar(30) NOT NULL,
+  email varchar(255) UNIQUE NOT NULL,
+  password varchar(72) NOT NULL,
+  creation_date timestamp DEFAULT CURRENT_TIMESTAMP
+);
+
+INSERT INTO users (name, email, password)
+VALUES
+  ('Zapato', 'zapato@example.com', 'INVALID_PASSWORD'),
+  ('Chotobuque', 'chotobuque@example.com', 'INVALID_PASSWORD'),
+  ('Alfiler', 'alfiler@example.com', 'INVALID_PASSWORD'),
+  ('Troca', 'troca@example.com', 'INVALID_PASSWORD');
 
 CREATE TABLE IF NOT EXISTS servicios (
   id serial NOT NULL PRIMARY KEY,
