@@ -2,7 +2,7 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 
 const { getServices, getServiceById, addService, updateServiceById, deleteServiceById } = require("../controllers/services.controller");
-const validateInputs = require("../middlewares/validateInputs");
+const enforceValidations = require("../middlewares/enforceValidations");
 
 const router = Router();
 
@@ -12,7 +12,7 @@ router.post("/", [
   check('nombre', 'El nombre es obligatorio').not().isEmpty(),
   check('descripcion', 'La descripción es obligatoria').not().isEmpty(),
   check('precio', 'El precio es obligatorio').not().isEmpty(),
-  validateInputs
+  enforceValidations
 ], addService);
 router.put("/:id", updateServiceById);
 router.delete("/:id", deleteServiceById);
