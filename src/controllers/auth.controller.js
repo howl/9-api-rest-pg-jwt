@@ -1,7 +1,7 @@
 const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 
 const User = require("../models/user.postgres");
+const genToken = require("../utils/genToken");
 
 const createUser = async (req, res) => {
   const { name, email, password } = req.body;
@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
 
     const user = await User.save({ name, email, password: await bcrypt.hash(password, 12) });
 
-    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = genToken(user.id);
 
     delete user.id;
 
@@ -55,7 +55,7 @@ const loginUser = async (req, res) => {
 
     delete user.password;
 
-    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = genToken(user.id);
 
     delete user.id;
 
@@ -85,7 +85,7 @@ const renewToken = async (req, res) => {
         msg: "No such uid",
       });
 
-    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = genToken(user.id);
 
     res.status(200).json({
       ok: true,
