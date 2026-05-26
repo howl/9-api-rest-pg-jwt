@@ -36,11 +36,44 @@ const createUser = async (req, res) => {
   }
 };
 
-const loginUser = (req, res) => {
-  res.status(405).json({
-    ok: false,
-    msg: "User login actually uninplemented"
-  });
+const loginUser = async (req, res) => {
+  const { email, password } = req.body;
+
+  try {
+    const user = await User.findByEmail(email);
+
+    if (!user)
+      res.status(404).json({
+        ok: false,
+        msg: "No users with that email",
+      });
+
+    if (!await bcrypt.compare(password, user.password))
+      res.status(401).json({
+        ok: false,
+        msg: "Wrong password"
+      });
+
+    delete user.password;
+
+    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    delete user.id;
+
+    res.status(200).json({
+      ok: true,
+      msg: 'User logged in',
+      user: user,
+      token: token
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      msg: `Server error trying to login user with email ${email}`
+    });
+  }
 };
 
 const renewToken = (req, res) => {
