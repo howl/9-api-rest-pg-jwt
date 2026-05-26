@@ -7,10 +7,10 @@ const validateInputs = (req, res, next) => {
     res.status(403).json({
       ok: false,
       errores: errors.mapped()
-    })
+    });
   }
 
   next();
 }
 
-module.exports = validateInputs
+module.exports = validateInputs;
