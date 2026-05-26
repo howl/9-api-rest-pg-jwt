@@ -1,0 +1,44 @@
+const { Pool } = require("pg");
+const queries = require("./queries.postgres");
+
+const pool = new Pool({
+  host: process.env.PG_DB_HOST,
+  user: process.env.PG_DB_USER,
+  password: process.env.PG_DB_PASSWORD,
+  database: process.env.PG_DB_NAME
+});
+
+const findByEmail = async (email) => {
+  let client, result;
+  try {
+    client = await pool.connect();
+    const data = await client.query(queries.getServiceByEmail, [email]);
+
+    result = data.rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    client.release();
+  }
+  return (result.length) ? result : null;
+};
+
+const save = async (entry) => {
+  const { name, email, password } = entry;
+  let client, result;
+  try {
+    client = await pool.connect();
+    const data = await client.query(queries.addUser, [name, email, password]);
+
+    result = data.rows;
+  } catch (error) {
+    console.log(error);
+    throw error;
+  } finally {
+    client.release();
+  }
+  return result;
+};
+
+module.exports = { findByEmail, save };
