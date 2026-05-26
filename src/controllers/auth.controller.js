@@ -75,11 +75,32 @@ const loginUser = async (req, res) => {
   }
 };
 
-const renewToken = (req, res) => {
-  res.status(405).json({
-    ok: false,
-    msg: "Token renew actually uninplemented"
-  });
+const renewToken = async (req, res) => {
+  try {
+    const user = await User.findById(req.uid);
+
+    if (!user)
+      return res.status(404).json({
+        ok: false,
+        msg: "No such uid",
+      });
+
+    const token = jwt.sign({ uid: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    res.status(200).json({
+      ok: true,
+      msg: "Token renewed",
+      user,
+      token
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({
+      ok: false,
+      msg: `Server error renewing token for uid ${req.uid}`
+    });
+  }
 };
 
 module.exports = {
