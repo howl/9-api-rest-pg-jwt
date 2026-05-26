@@ -3,6 +3,7 @@ const { body } = require("express-validator");
 
 const { createUser, loginUser, renewToken } = require("../controllers/auth.controller");
 const enforceValidations = require("../middlewares/enforceValidations");
+const verifyToken = require("../middlewares/verifyToken");
 
 const router = Router();
 
@@ -24,6 +25,6 @@ router.post("/", [
     .isStrongPassword({ minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0 }),
   enforceValidations
 ], loginUser);
-router.post("/renew", renewToken);
+router.post("/renew", verifyToken, renewToken);
 
 module.exports = router;
