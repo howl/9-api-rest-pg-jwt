@@ -28,7 +28,7 @@ const findByEmail = async (email) => {
     console.log(error);
     throw error;
   } finally {
-    client.release();
+    client?.release();
   }
   return result;
 };
@@ -45,7 +45,7 @@ const save = async (entry) => {
     console.log(error);
     throw error;
   } finally {
-    client.release();
+    client?.release();
   }
   return result;
 };
