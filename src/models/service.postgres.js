@@ -1,5 +1,5 @@
 const { Pool } = require("pg");
-const queries = require("./queries.postgres");
+const { queriesService } = require("./queries.postgres");
 
 const pool = new Pool({
   host: process.env.PG_DB_HOST,
@@ -12,7 +12,7 @@ const find = async () => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.getServices);
+    const data = await client.query(queriesService.getServices);
 
     result = data.rows;
   } catch (error) {
@@ -28,7 +28,7 @@ const findById = async (id) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.getServiceById, [id]);
+    const data = await client.query(queriesService.getServiceById, [id]);
 
     result = data.rows;
   } catch (error) {
@@ -45,7 +45,7 @@ const save = async (entry) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.addService, [titulo, descripcion, categoria]);
+    const data = await client.query(queriesService.addService, [titulo, descripcion, categoria]);
 
     result = data.rows;
   } catch (error) {
@@ -62,7 +62,7 @@ const findByIdAndUpdate = async (id, entry) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.updateServiceById, [id, titulo, descripcion, categoria]);
+    const data = await client.query(queriesService.updateServiceById, [id, titulo, descripcion, categoria]);
 
     result = data.rows;
   } catch (error) {
@@ -78,7 +78,7 @@ const findByIdAndDelete = async (id) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.deleteServiceById, [id]);
+    const data = await client.query(queriesService.deleteServiceById, [id]);
 
     result = data.rows;
   } catch (error) {

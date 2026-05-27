@@ -1,5 +1,5 @@
 const { Pool } = require("pg");
-const queries = require("./queries.postgres");
+const { queriesUser } = require("./queries.postgres");
 
 const pool = new Pool({
   host: process.env.PG_DB_HOST,
@@ -12,7 +12,7 @@ const findById = async (id) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.getUserById, [id]);
+    const data = await client.query(queriesUser.getUserById, [id]);
 
     result = data.rowCount ? data.rows[0] : null;
   } catch (error) {
@@ -28,7 +28,7 @@ const findByEmail = async (email) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.getUserByEmail, [email]);
+    const data = await client.query(queriesUser.getUserByEmail, [email]);
 
     result = data.rowCount ? data.rows[0] : null;
   } catch (error) {
@@ -45,7 +45,7 @@ const save = async (entry) => {
   let client, result;
   try {
     client = await pool.connect();
-    const data = await client.query(queries.addUser, [name, email, password]);
+    const data = await client.query(queriesUser.addUser, [name, email, password]);
 
     result = data.rows[0];
   } catch (error) {
