@@ -25,6 +25,6 @@ router.post("/", [
     .isStrongPassword({ minLength: 8, minLowercase: 0, minUppercase: 0, minNumbers: 0, minSymbols: 0 }),
   enforceValidations
 ], loginUser);
-router.post("/renew", verifyToken, renewToken);
+router.get("/renew", verifyToken, renewToken);
 
 module.exports = router;
