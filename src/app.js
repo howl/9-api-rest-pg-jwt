@@ -9,6 +9,7 @@ const URL_BASE = process.env.URL_BASE;
 const app = express();
 
 app.use(express.json());
+app.use(express.urlencoded());
 
 //dbConnect().catch((error) => { console.log(error) });
 
