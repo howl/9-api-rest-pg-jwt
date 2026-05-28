@@ -30,7 +30,8 @@ const createUser = async (req, res) => {
 
     res.status(500).json({
       ok: false,
-      msg: `Server error trying to register new user email ${email}`
+      msg: `Server error trying to register new user email ${email}`,
+      error
     });
   }
 };
