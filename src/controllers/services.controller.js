@@ -16,6 +16,7 @@ const getServices = async (req, res) => {
     res.status(500).json({
       ok: false,
       msg: "Server error getting services",
+      error
     });
   }
 };
